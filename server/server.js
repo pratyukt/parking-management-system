@@ -19,6 +19,7 @@ app.get("/", (req, res) => {
 const signuproutes = require("./routes/SignUpRoutes");
 app.use("/", signuproutes);
 
+
 // Start server
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);

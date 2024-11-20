@@ -44,4 +44,35 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = {registerUser};
+const loginUser = asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        res.status(400);
+        throw new Error("Please fill all fields");
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+        res.status(400);
+        throw new Error("Invalid credentials");
+    }
+
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
+        res.status(400);
+        throw new Error("Invalid credentials");
+    }
+
+    res.status(200).json({
+        _id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        age: user.age,
+        phoneNumber: user.phoneNumber,
+        role: user.role,
+    });
+});
+
+module.exports = {registerUser, loginUser};
