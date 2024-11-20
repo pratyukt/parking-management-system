@@ -4,7 +4,7 @@ const getAllSpaces = async (req, res) => {
     const spaces = await ParkingSpace.find();
     res.status(200).json(spaces);
 };
-
+// jgjg
 const updateSpace = async (req, res) => {
     const { spaceId, isAvailable } = req.body;
 
