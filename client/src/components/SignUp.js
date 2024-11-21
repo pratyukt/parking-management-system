@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../styles/SignUp.css';
+import '../Styles/SignUp.css';
 
 const SignUp = () => {
 
     const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
+        username: '',
         email: '',
-        phoneNumber: 0,
+        phonenumber: 0,
         password: '',
-        age: '',
         role: 'user',
     });
 
@@ -31,7 +29,7 @@ const SignUp = () => {
         e.preventDefault(); 
 
         try {
-            const response = await axios.post('http://localhost:3788/signup', formData);
+            const response = await axios.post('http://localhost:3000/signup', formData);
             setResponseMessage(response.data.message || 'Signup successful!');
         } catch (error) {
             console.error('Error during signup:', error);
@@ -45,23 +43,12 @@ const SignUp = () => {
                 <h2>Sign Up</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label htmlFor="firstName">Firstname:</label>
+                        <label htmlFor="username">Username:</label>
                         <input
                             type="text"
-                            id="firstName"
-                            name="firstName"
-                            value={formData.firstName}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="lastName">Lastname:</label>
-                        <input
-                            type="text"
-                            id="lastName"
-                            name="lastName"
-                            value={formData.lastName}
+                            id="username"
+                            name="username"
+                            value={formData.username}
                             onChange={handleChange}
                             required
                         />
@@ -81,9 +68,9 @@ const SignUp = () => {
                         <label htmlFor="phone">Phone No:</label>
                         <input
                             type="tel"
-                            id="phoneNumber"
-                            name="phoneNumber"
-                            value={formData.phoneNumber}
+                            id="phonenumber"
+                            name="phonenumber"
+                            value={formData.phonenumber}
                             onChange={handleChange}
                             required
                         />
@@ -95,17 +82,6 @@ const SignUp = () => {
                             id="password"
                             name="password"
                             value={formData.password}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="age">Age:</label>
-                        <input
-                            type="age"
-                            id="age"
-                            name="age"
-                            value={formData.age}
                             onChange={handleChange}
                             required
                         />

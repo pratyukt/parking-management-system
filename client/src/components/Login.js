@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../styles/Login.css';
+import "../Styles/Login.css";
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -19,16 +19,9 @@ const Login = () => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); 
-
-        // Create a new object with only the necessary fields for login
-        const loginData = {
-            email: formData.email,
-            password: formData.password,
-        };
-
+        e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3788/login', loginData);
+            const response = await axios.post('http://localhost:3000/login', formData);
             setResponseMessage(response.data.message || 'Login successful!');
         } catch (error) {
             console.error('Error during login:', error);
@@ -40,7 +33,7 @@ const Login = () => {
         <div className="login-container">
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
-                <div>
+                <div className="form-group">
                     <label htmlFor="email">Email:</label>
                     <input
                         type="email"
@@ -51,7 +44,7 @@ const Login = () => {
                         required
                     />
                 </div>
-                <div>
+                <div className="form-group">
                     <label htmlFor="password">Password:</label>
                     <input
                         type="password"
@@ -64,7 +57,8 @@ const Login = () => {
                 </div>
                 <button type="submit">Login</button>
             </form>
-            {responseMessage && <p>{responseMessage}</p>}
+            {responseMessage && <p className="response-message">{responseMessage}</p>}
+            <p className="register-link">Don't have an account? <a href="#">Register here</a></p>
         </div>
     );
 };

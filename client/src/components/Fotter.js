@@ -1,5 +1,5 @@
 import React from 'react'
-import '../styles/Fotter.css'
+import '../Styles/Fotter.css'
 const Fotter = () => {
   return (
     <>

@@ -1,12 +1,20 @@
 const asyncHandler = require("express-async-handler");
-const User = require("../models/SignUpModels");
+const User = require("../models/SignUpModel");
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
 
+
+const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.PRIVATE_KEY, { expiresIn: '30d' });
+};
 // Register user
-const registerUser = asyncHandler(async (req, res) => {
-    const { firstName, lastName, email, password, age, phoneNumber, role } = req.body;
 
-    if (!firstName || !lastName || !email || !password || !age || !phoneNumber || !role) {
+
+
+const registerUser = asyncHandler(async (req, res) => {
+    const { username,email, phonenumber, password, role } = req.body;
+
+    if (!username || !email || !phonenumber || !password || !role) {
         res.status(400);
         throw new Error("Please fill all fields");
     }
@@ -24,19 +32,18 @@ const registerUser = asyncHandler(async (req, res) => {
 
     // Create user
     const user = await User.create({
-        firstName,
-        lastName,
+        username,
         email,
+        phonenumber,
         password: hashedPassword,
-        age,
-        phoneNumber,
         role
     });
 
     if (user) {
         res.status(201).json({
             _id: user.id,
-            email: user.email
+            email: user.email,
+            token: generateToken(user._id)
         });
     } else {
         res.status(400);
@@ -49,30 +56,30 @@ const loginUser = asyncHandler(async (req, res) => {
 
     if (!email || !password) {
         res.status(400);
-        throw new Error("Please fill all fields");
+        throw new Error("Please enter both email and password");
     }
 
     const user = await User.findOne({ email });
     if (!user) {
         res.status(400);
-        throw new Error("Invalid credentials");
+        throw new Error("User not found");
     }
 
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
-    if (!isPasswordMatch) {
+    
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isPasswordCorrect) {
         res.status(400);
-        throw new Error("Invalid credentials");
+        throw new Error("Invalid email or password");
     }
 
     res.status(200).json({
         _id: user.id,
         email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        age: user.age,
-        phoneNumber: user.phoneNumber,
-        role: user.role,
+        message: "Login successful",
+        token: generateToken(user._id)
     });
 });
 
-module.exports = {registerUser, loginUser};
+
+
+module.exports = {registerUser,loginUser};

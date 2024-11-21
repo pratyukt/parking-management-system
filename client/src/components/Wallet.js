@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import "../styles/Wallet.css"
+import "../Styles/Wallet.css"
 
 const Wallet = () => {
     const [balance,setBalance] = useState(0);
