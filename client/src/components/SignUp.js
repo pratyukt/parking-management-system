@@ -31,7 +31,7 @@ const SignUp = () => {
         e.preventDefault(); 
 
         try {
-            const response = await axios.post('http://localhost:5000/signup', formData);
+            const response = await axios.post('http://localhost:3788/signup', formData);
             setResponseMessage(response.data.message || 'Signup successful!');
         } catch (error) {
             console.error('Error during signup:', error);
